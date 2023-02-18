@@ -80,7 +80,8 @@ const Login: React.FC = () => {
         <LoginForm
           logo={<img alt="logo" src={SYSTEM_LOGO} />}
           title="note&todolist"
-          subTitle={'记录生活'}
+          // subTitle={< style="color: pink; font-size: 20px;">'你相信光吗'</>}
+          subTitle={'你相信光吗'}
           initialValues={{
             autoLogin: true,
           }}
@@ -110,7 +111,8 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={'用户名: admin or user'}
+                // placeholder={'用户名: admin or user'}
+                placeholder={'用户名'}
                 rules={[
                   {
                     required: true,
@@ -124,7 +126,8 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={'密码: ant.design'}
+                // placeholder={'密码: ant.design'}
+                placeholder={'请输入密码'}
                 rules={[
                   {
                     required: true,

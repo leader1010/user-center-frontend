@@ -12,9 +12,9 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: 'U Know',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  logo: 'https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/161/迪迦logo瘦版.png',
   iconfontUrl: '',
 };
 
