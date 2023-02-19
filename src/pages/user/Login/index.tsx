@@ -101,7 +101,7 @@ const Login: React.FC = () => {
           </Tabs>
 
           {status === 'error' && loginType === 'account' && (
-            <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
+            <LoginMessage content={'错误的用户名和密码'} />
           )}
           {type === 'account' && (
             <>
@@ -204,9 +204,18 @@ const Login: React.FC = () => {
             <a
               style={{
                 float: 'right',
+                padding: '5px'
               }}
             >
-              忘记密码 ?
+              没有账号?请先注册
+            </a>
+            <a
+              style={{
+                float: 'right',
+                padding: '5px'
+              }}
+            >
+                忘记密码
             </a>
           </div>
         </LoginForm>
