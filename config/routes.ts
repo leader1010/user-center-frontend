@@ -4,6 +4,7 @@ export default [
     layout: false,
     routes: [
       { name: '登录', path: '/user/login', component: './user/Login' },
+      { name: '注册用户', path: '/user/register', component: './user/register' },
       { component: './404' },
     ],
   },
