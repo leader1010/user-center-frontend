@@ -16,8 +16,10 @@ import {
 } from '@ant-design/pro-components';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
+import { history, useModel } from 'umi';
 import styles from './index.less';
 import {SYSTEM_LOGO} from "@/constants";
+import {register} from "@/services/ant-design-pro/api";
 // const LoginMessage: React.FC<{
 //   content: string;
 // }> = ({ content }) => (
@@ -32,10 +34,64 @@ import {SYSTEM_LOGO} from "@/constants";
 // );
 const Register: React.FC = () => {
   const [type, setType] = useState<string>('account');
+  const { initialState, setInitialState } = useModel('@@initialState');
+  const fetchUserInfo = async () => {
+    const userInfo = await initialState?.fetchUserInfo?.();
+    if (userInfo) {
+      await setInitialState((s) => ({
+        ...s,
+        currentUser: userInfo,
+      }));
+    }
+  };
+  const handleSubmit = async (values: API.LoginParams) => {
+    const {password, checkPassword} = values;
+    // 校验
+    if (password !== checkPassword) {
+      message.error('两次输入的密码不一致');
+      return;
+    }
+
+
+    try {
+      // 注册
+      const msg = await register({
+        ...values,
+        type,
+      });
+      if (msg.status === 'ok') {
+        const defaultLoginSuccessMessage = '注册成功！';
+        message.success(defaultLoginSuccessMessage);
+        await fetchUserInfo();
+        /** 此方法会跳转到 redirect 参数所在的位置 */
+        if (!history) return;
+        const { query } = history.location;
+        // const { redirect } = query as {
+        //   redirect: string;
+        // };
+        history.push({
+          pathname: '/welcome',
+          query,
+        });
+        return;
+      }
+      const defaultLoginFailureMessage = msg.status;
+      message.error(defaultLoginFailureMessage);
+      return;
+    } catch (error) {
+      const defaultLoginFailureMessage = '注册失败';
+      message.error(defaultLoginFailureMessage);
+    }
+  };
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <LoginForm
+          submitter={{
+            searchConfig: {
+              submitText: '注册'
+            }
+          }}
           logo={<img alt="logo" src={SYSTEM_LOGO} />}
           title="note&todolist"
           subTitle={'你相信光吗'}
@@ -84,6 +140,21 @@ const Register: React.FC = () => {
                 }}
                 // placeholder={'密码: ant.design'}
                 placeholder={'请输入密码'}
+                rules={[
+                  {
+                    required: true,
+                    message: '密码是必填项！',
+                  },
+                ]}
+              />
+              <ProFormText.Password
+                name="checkPassword"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined className={styles.prefixIcon} />,
+                }}
+                // placeholder={'密码: ant.design'}
+                placeholder={'再次确认密码'}
                 rules={[
                   {
                     required: true,
@@ -158,8 +229,9 @@ const Register: React.FC = () => {
               style={{
                 float: 'right',
               }}
+              href={'http://localhost:3000/user/login'}
             >
-              忘记密码
+              已有账号,点击登录
             </a>
           </div>
         </LoginForm>
